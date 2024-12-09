@@ -243,11 +243,11 @@ const uint8_t TOUCH_GT911_Cfg[] =
     0x10,                // 0x804A Y ouptut max : y 272
     0x01,
     GT911_MAX_TP,        // 0x804C Touch number
-//#if defined(TOUCH_PANEL_INVERTED)
+#if defined(TOUCH_PANEL_INVERTED)
     0x3C | 0xC0,         // 0x804D Module switch 1 : 180° rotation
-//#else
-//    0x3C,                // 0x804D Module switch 1 : bit4= xy change Int mode
-//#endif
+#else
+    0x3C,                // 0x804D Module switch 1 : bit4= xy change Int mode
+#endif
     0x20,                // 0x804E Module switch 2
     0x22,                // 0x804F Shake_Count
     0x0A,                // 0x8050 Filter
@@ -742,22 +742,18 @@ struct TouchState touchPanelRead()
           internalTouchState.event == TE_UP ||
           internalTouchState.event == TE_SLIDE_END) {
         internalTouchState.event = TE_DOWN;
-        internalTouchState.startX = internalTouchState.x =
-            touchData.points[0].x;
-        internalTouchState.startY = internalTouchState.y =
-            touchData.points[0].y;
+        internalTouchState.startX = internalTouchState.x = 480 - touchData.points[0].x;
+        internalTouchState.startY = internalTouchState.y = 272 - touchData.points[0].y;
         downTime = now;
       } else {
-        internalTouchState.deltaX =
-            touchData.points[0].x - internalTouchState.x;
-        internalTouchState.deltaY =
-            touchData.points[0].y - internalTouchState.y;
+        internalTouchState.deltaX = 480 - touchData.points[0].x - internalTouchState.x;
+        internalTouchState.deltaY = 272 - touchData.points[0].y - internalTouchState.y;
         if (internalTouchState.event == TE_SLIDE ||
             abs(internalTouchState.deltaX) >= SLIDE_RANGE ||
             abs(internalTouchState.deltaY) >= SLIDE_RANGE) {
           internalTouchState.event = TE_SLIDE;
-          internalTouchState.x = touchData.points[0].x;
-          internalTouchState.y = touchData.points[0].y;
+          internalTouchState.x = 480 - touchData.points[0].x;
+          internalTouchState.y = 272 - touchData.points[0].y;
         }
       }
     } else {
