@@ -967,9 +967,9 @@
   #define EXTI2_IRQ_Priority  9
 #endif
 
-//#if defined(PCBX12S)
-//  #define TOUCH_PANEL_INVERTED
-//#endif
+#if defined(PCBX12S)
+  #define TOUCH_PANEL_INVERTED
+#endif
 #endif // HARDWARE_TOUCH
 
 // First I2C Bus
